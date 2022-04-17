@@ -6,34 +6,68 @@ void push(int *stack, int data, int *stack_top){
     stack[*stack_top] = data; 
 }
 
-int city_check(int *arr, int arr_top, int c){
-    for(int i = 0; i <= arr_top; i++){
-        if(arr[i] == c){
-            return 1;
-        }
-    }
-    return 0;
+int pop(int *stack, int *stack_top){
+    int data = stack[*stack_top];
+    stack[*stack_top] = -1; 
+    *stack_top -= 1;
+    return data;
 }
 
-void make_tree(int n, int tree[], int **arr, int *arr_top, int root_c, int city_id, int *cnt){
-    tree[root_c] = city_id;
-    *cnt += 1;
-    if(*cnt != n){
-        for(int i = 0; i < n; i++){
-            if(tree[i] == -2 && city_check(arr[i], arr_top[i], root_c)){
-                make_tree(n, tree, arr, arr_top, i, root_c, cnt);
+void visit_every_city(int **arr, int *arr_top, int *visit_city_arr, int *visit_city_arr_top, int *visit_city_arr_2, int *visit_city_arr_top_2, int *check_visited, int *check_visited_2, int s, int r){
+    push(visit_city_arr, s, visit_city_arr_top);
+    check_visited[s] = 1;
+    while(visit_city_arr[*visit_city_arr_top] != r){
+        int cnt = 0;
+        int a = *visit_city_arr_top;
+        for(int i = 0; i <= arr_top[visit_city_arr[a]]; i++){
+            if(check_visited[arr[visit_city_arr[a]][i]] == 0){
+                push(visit_city_arr, arr[visit_city_arr[a]][i], visit_city_arr_top);
+                check_visited[arr[visit_city_arr[a]][i]] = 1;
+                cnt++;
             }
         }
-        return;
+        if(cnt == 0){
+            pop(visit_city_arr, visit_city_arr_top);
+        }
     }
-    return;
+
+    push(visit_city_arr_2, s, visit_city_arr_top_2);
+    check_visited_2[s] = 1;
+    while(visit_city_arr_2[*visit_city_arr_top_2] != r){
+        int b = pop(visit_city_arr_2, visit_city_arr_top_2);
+        for(int i = 0; i <= arr_top[b]; i++){
+            if(check_visited_2[arr[b][i]] == 0){
+                push(visit_city_arr_2, arr[b][i], visit_city_arr_top_2);
+                check_visited_2[arr[b][i]] = 1;
+            }
+        }
+    }
+    pop(visit_city_arr_2, visit_city_arr_top_2);
+
 }
 
-int walking_through_the_city(int tree_s[], int tree_r[], int c){
-    while(tree_s[c] == tree_r[c] && tree_s[c] != -1){
-        c = tree_s[c];
+void adjust_ans(int **arr, int *arr_top, int *path, int *path_top, int *ans, int n){
+    int *visit = malloc(sizeof(int)*n);
+    int visit_top = -1;
+    for(int i = 0; i < n; i++){
+        visit[i] = -1;
     }
-    return c;
+    for(int i = 0; i <= *path_top; i++){
+        int *check = calloc(n, sizeof(int));
+        push(visit, path[i], &visit_top);
+        check[path[i]] = 1;
+        while(visit_top != -1){
+            int b = pop(visit, &visit_top);
+            for(int j = 0; j <= arr_top[b]; j++){
+                if(check[arr[b][j]] == 0 && ans[arr[b][j]] == -1){
+                    push(visit, arr[b][j], &visit_top);
+                    check[arr[b][j]] = 1;
+                    ans[arr[b][j]] = path[i];
+                }
+            }
+        }
+        free(check);
+    }
 }
 
 int main(){
@@ -45,14 +79,24 @@ int main(){
         arr[i] = malloc(sizeof(int)*1);
     }
     int *arr_top = malloc(sizeof(int)*n);
-    int *tree_s = malloc(sizeof(int)*n);
-    int *tree_r = malloc(sizeof(int)*n);
-
+    int *visit_city_arr = malloc(sizeof(int)*n);
+    int visit_city_arr_top = -1;
+    int *visit_city_arr_2 = malloc(sizeof(int)*n);
+    int visit_city_arr_top_2 = -1;
+    int *check_visited = malloc(sizeof(int)*n);
+    int *check_visited_2 = malloc(sizeof(int)*n);
+    int *path = malloc(sizeof(int)*n);
+    int path_top = -1;
+    int *ans = malloc(sizeof(int)*n);
     for(int i = 0; i < n; i++){
-        tree_s[i] = -2;
-        tree_r[i] = -2;
         arr_top[i] = -1;
         arr[i][0] = -1;
+        visit_city_arr[i] = -1;
+        check_visited[i] = 0;
+        visit_city_arr_2[i] = -1;
+        check_visited_2[i] = 0;
+        path[i] = -1;
+        ans[i] = -1;
     }
 
     for(int i = 0; i < n-1; i++){
@@ -64,20 +108,26 @@ int main(){
         push(arr[b-1], a-1, &arr_top[b-1]);
     }
 
-    int cnt = 0;
-    make_tree(n, tree_s, arr, arr_top, s-1, -1, &cnt);
-    cnt = 0;
-    make_tree(n, tree_r, arr, arr_top, r-1, -1, &cnt);
+    visit_every_city(arr, arr_top, visit_city_arr, &visit_city_arr_top, visit_city_arr_2, &visit_city_arr_top_2, check_visited, check_visited_2, s-1, r-1);
+
+    int a = 0;
+    for(int i = 0; i <= visit_city_arr_top; i++){
+        if(visit_city_arr[i] == visit_city_arr_2[a]){
+            a++;
+        }
+        else{
+            push(path, visit_city_arr[i], &path_top);
+            ans[visit_city_arr[i]] = visit_city_arr[i];
+        }
+    }
+
+    adjust_ans(arr, arr_top, path, &path_top, ans, n);
 
     for(int i = 0; i < q; i++){
         int c;
         scanf("%d", &c);
-        printf("%d\n", walking_through_the_city(tree_s, tree_r, c-1) + 1);
+        printf("%d\n", ans[c-1]+1);
     }
-
-    /*for(int i = 0; i < n; i++){
-        printf("%d ", tree_s[i]);
-    }*/
 
     return 0;
 }
