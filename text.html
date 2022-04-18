@@ -67,15 +67,15 @@ Human algorithm: In a postorder traversal it's last node in that subtree will be
 <li>
 <p>Algorithm:</p>
 <pre><code class="language-C"><div> <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>
- modify_T(T.root):
-     <span class="hljs-keyword">if</span> T is NIL:
+ modify_T(root):
+     <span class="hljs-keyword">if</span> root is <span class="hljs-literal">nullptr</span>:
          <span class="hljs-keyword">return</span>
      <span class="hljs-keyword">else</span>:
-         modify_T(T.root-&gt;right)
-         <span class="hljs-keyword">int</span> temp = T.root.data
-         T.root.data += a
+         modify_T(root-&gt;right)
+         <span class="hljs-keyword">int</span> temp = root-&gt;data
+         root-&gt;data += a
          a += temp
-         modify_T(T.root-&gt;left)
+         modify_T(root-&gt;left)
 </div></code></pre>
 <p>The time complexity is O(n) cause it traverse through n node with O(1) operation to the node.<br>
 The algorithm works by traversing from the largest node to the smallest node, and adjust the data in the node by adding the sum of the value of every node that has been traversed, which is the nodes that are larger than it.</p>
@@ -93,6 +93,18 @@ The algorithm works by traversing from the largest node to the smallest node, an
 <li>
 <p>Tree:<br>
 <img src="file:///c:\Users\ri767\Desktop\DSA test\DSA-test-2\P1-5.jpg" style="zoom:35%" /></p>
+</li>
+<li>
+<p>Algorithm:</p>
+<pre><code class="language-C"><div> height(root):
+     <span class="hljs-keyword">if</span> root is <span class="hljs-literal">nullptr</span>:
+         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+     <span class="hljs-keyword">else</span>
+         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + max(height(root-&gt;left), height(root-&gt;left))
+ wasted_positions_num = <span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>, height(root)) - <span class="hljs-number">1</span> - n
+</div></code></pre>
+<p>The time complexity is O(n) cause the recursive fuction traverse through n nodes with O(1) operations during the traverse<br>
+The algorithm works cause we know that the number of nodes in a complete binary tree are 2^height - 1, so the wated positions in an array will be 2^height - 1 - n</p>
 </li>
 </ol>
 
