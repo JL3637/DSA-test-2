@@ -21,9 +21,8 @@
             return
         else:
             modify_T(root->right)
-            int temp = root->data
             root->data += a
-            a += temp
+            a = root->data
             modify_T(root->left)
    ```  
    The time complexity is O(n) cause it traverse through n node with O(1) operation to the node.  
@@ -53,7 +52,7 @@
    ```C
    find_max_min():
         stack = empty stack
-        
+
 
         for i = 1 to i = n - 2:
 
