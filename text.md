@@ -52,12 +52,70 @@
    ```C
    find_max_min():
         stack = empty stack
-
-
-        for i = 1 to i = n - 2:
-
-
-
-
-
+        push(stack, 1)
+        push(stack, 2)
+        for i = 3 to i = n:
+            push(stack, i)
+            a = pop(stack), b = pop(stack), c = pop(stack)
+            if query_attitude_value(a, b, c) == True:
+                push(stack, a)
+                push(stack, c)
+            else if query_attitude_value(a, c, b) == True
+                push(stack, a)
+                push(stack, b)
+            else
+                push(stack, b)
+                push(stack, c)
+        max_min = {pop(stack), pop(stack)}
+        return max_min    
    ```
+   The time complexity is O(n) query complexity, cause the for loop interations are n-2, and each iteration needs O(1) query complexty  
+
+### Prolem 3:  
+1. Tree:  
+   <img src="./P3-1.jpg" style="zoom:35%" />  
+
+2. Tree:  
+   <img src="./P3-2.jpg" style="zoom:35%" />   
+
+3. Algorithm:  
+   ```C
+    find_max_index(heights, a, b):
+        max = 0
+        index = 0
+        for i = a to b:
+            if heights[i] > max
+                max = heights[i]
+                index = i
+        return index
+    build_cartesian_tree(root, heights, a, b):
+        if a == b:
+            return
+        else:
+            index = find_max_index(heights, a, b)
+            root->data = heights[index]
+            build_cartesian_tree(root->left, heights, a, index-1)
+            build_cartesian_tree(root->right, heights, index+1, b)
+   ```  
+   The time complexity is O(n * h) because to complete every floor of the tree it will take (n-c) times for searching the max index  
+    Example for the worst case:  
+    <img src="./P3-3.jpg" style="zoom:35%" />   
+
+4. Algorithm:  
+   ```C
+    find_index_value(root, index, a):
+        if root == nullptr:
+            return
+        else:
+            find_index_value(root->left, index, a)
+            if(index == a):
+                return root->data
+            else:
+                a++
+            find_index_value(root->right, index, a)
+   ```  
+
+5. Algorithm:  
+   ```C
+
+   ``` 
