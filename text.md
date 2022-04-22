@@ -90,7 +90,7 @@
 
    ```  
    
-5. There are 2 "good triplets" 
+5. There are 14 "good triplets" 
 
 6. Algoritm:  
    ```C
