@@ -82,7 +82,8 @@
    
 3. Algoritm:  
    ```C
-
+    add_new_group(n):
+        if()
    ```  
    
 4. Algoritm:  
