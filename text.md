@@ -80,11 +80,11 @@
    add_new_group(sorted_array, n)   //function in 2-3
    sorted_array = empty array
    make_sorted_array(sorted_array, n):
-      if query(1, 2, 3) == True:
+      if query_attitude_value(1, 2, 3) == True:
          sorted_array[1] = 1
          sorted_array[2] = 2
          sorted_array[3] = 3
-      else if query(1, 3, 2) == True:
+      else if query_attitude_value(1, 3, 2) == True:
          sorted_array[1] = 1
          sorted_array[2] = 3
          sorted_array[3] = 2
@@ -102,23 +102,23 @@
    ```C
    add_new_group(sorted_array, n):
       a = 1, b = n
-      if query(sorted_array[a], sorted_array[b], n+1) == True:
+      if query_attitude_value(sorted_array[a], sorted_array[b], n+1) == True:
          sorted_array[n+1] = n+1
          return
-      else if query(n+1, sorted_array[a], sorted_array[b]) == True:
+      else if query_attitude_value(n+1, sorted_array[a], sorted_array[b]) == True:
          insert n+1 into sorted_array[1]
          return
       else:
          while(1):
             if a == b-1:
-               if query(sorted_array[a], n+1, sorted_array[b]) == True:
+               if query_attitude_value(sorted_array[a], n+1, sorted_array[b]) == True:
                   insert n+1 into sorted_array[b]
                   return
                else:
                   insert n+1 into sorted_array[b+1]
                   return
             else:
-               if query(sorted_array[a], n+1, sorted_array[b]) == True:
+               if query_attitude_value(sorted_array[a], n+1, sorted_array[b]) == True:
                   b = a + (b - a) / 2
                else:
                   temp = a
@@ -128,17 +128,26 @@
    The query complexity is O(log n), because for every query we can cut the searching range in half till a = b-1.  
    The algorithm works by squeezing the searching range, because if n+1 doesn't fits in the searching range than it must fits somewhere in the left-hand side.
    
-4. Algoritm:  
-   ```C
-
-
-
-   ```  
+4. Skip  
    
 5. There are 14 "good triplets" 
 
 6. Algoritm:  
    ```C
+   stack = empty stack
+   find_good_triplets(n):
+      for i = 1 to n:
+         for j = 1 to n:
+            if i == j:
+               continue
+            for k =1 to n:
+               if j == k or i == k:
+                  continue
+               if query_attitude_value(i,j,k) == True and query_terrible_value(i,j,k) == True:
+                  push(stack, {i,j,k})
+
+
+
 
    ```  
 
