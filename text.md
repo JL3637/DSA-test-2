@@ -1,4 +1,4 @@
-## DSA HW-2  
+## B10902033 林祐辰 DSA HW-2  
 ### Problem 0:  
 1. 李沛宸 B10902032
 2. 李沛宸 B10902032
@@ -35,6 +35,7 @@
    
 5. Tree:  
    <img src="./P1-5.jpg" style="zoom:35%" />   
+   </br>  
 
 6. Algorithm:  
    ```C
@@ -74,6 +75,9 @@
    ```
    The query complexity is O(n), because the for loop interations are n-2, and each iteration needs O(1) query complexty.  
    The algorithm works by using a stack to store max and min value, and because by asking for query at most two times we can always get the max and min among three values.  
+   </br>  
+   </br>  
+   </br>  
 
 2. Algoritm:  
    ```C
@@ -145,13 +149,22 @@
                   continue
                if query_attitude_value(i,j,k) == True and query_terrible_value(i,j,k) == True:
                   push(stack, {i,j,k})
-
-
-
-
    ```  
+   The query complexity is apparently O(n^3).  
+   The algorithm works by method of exhaustion, and try every group one by one.  
 
-### Prolem 3:  
+   Here is two other method that I have think of but doesn't have time to adjust it into pseudo code:  
+   1. O(n^2) query complexity:  
+      first step: sort attitude values in O(nlog n) and get the sorted array Q.  
+      second step: choose j from 2 to n-1, and scan the left side and right side j. The ones that are 左小右大 or 左大右小, will be a pair of good triplets.This step takes O(n^2).
+   2. O(nlog n) query complexity:  
+      first step: sort attitude values in O(nlog n) and get the sorted array Q.  
+      second step: by using the think of insertion sort we can get what we want above in O(nlog n).  
+   </br>  
+   </br>  
+   </br>
+
+### Problem 3:  
 1. Tree:  
    <img src="./P3-1.jpg" style="zoom:35%" />  
 
